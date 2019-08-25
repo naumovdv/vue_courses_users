@@ -12,35 +12,24 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>
-            #
-          </th>
-          <th>
-            Active
-          </th>
-          <th>
-            Balance
-          </th>
-          <th>
-            Age
-          </th>
-          <th>
-            Access level
-          </th>
-          <th>
-            First name
-          </th>
-          <th>
-            Last name
-          </th>
-          <th>
-            Company
-          </th>
+          <th>#</th>
+          <th>Active</th>
+          <th>Balance</th>
+          <th>Age</th>
+          <th>Access level</th>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Company</th>
+          <th></th>
         </tr>
       </thead>
       <tbody v-if="isVisibleUserList">
         <tr v-for="user in users" :key="user.id">
-          <td>{{ user.id }}</td>
+          <td>
+            <router-link :to="`/userEdit/${user.id}`">{{
+              user.id
+            }}</router-link>
+          </td>
           <td>{{ user.isActive }}</td>
           <td>{{ user.balance }}</td>
           <td>{{ user.age }}</td>
@@ -48,6 +37,11 @@
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.company }}</td>
+          <td>
+            <button class="btn btn-danger" @click="deleteUser(user.id)">
+              Удалить
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -82,6 +76,9 @@ export default {
   methods: {
     toggleUserList: function() {
       this.isVisibleUserList = !this.isVisibleUserList;
+    },
+    deleteUser: function(userId) {
+      this.$emit('delete', userId);
     }
   }
 };

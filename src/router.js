@@ -1,7 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from '@/views/Home.vue';
-import Users from '@/views/Users.vue';
 
 Vue.use(Router);
 
@@ -11,11 +9,19 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: () => import('@/views/Home.vue')
     },
     {
       path: '/users',
-      component: Users
+      component: () => import('@/views/Users.vue')
+    },
+    {
+      path: '/userEdit/:id',
+      component: () => import('@/views/UserEdit.vue')
+    },
+    {
+      path: '/userAdd',
+      component: () => import('@/views/UserAdd.vue')
     }
   ]
 });

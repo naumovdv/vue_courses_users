@@ -22,6 +22,9 @@
           <li class="nav-item">
             <router-link to="/users" class="nav-link">Users</router-link>
           </li>
+          <li class="nav-item">
+            <router-link to="/userAdd" class="nav-link">Add user</router-link>
+          </li>
         </ul>
       </div>
     </nav>
