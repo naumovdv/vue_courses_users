@@ -9,6 +9,7 @@
         {{ toggleButtonText }}
       </button>
     </div>
+    <count-items-on-page v-model="itemsOnPage" />
     <table class="table table-striped">
       <thead>
         <tr>
@@ -24,7 +25,7 @@
         </tr>
       </thead>
       <tbody v-if="isVisibleUserList">
-        <tr v-for="user in users" :key="user.id">
+        <tr v-for="user in usersVisible" :key="user.id">
           <td>
             <router-link :to="`/userEdit/${user.id}`">{{
               user.id
@@ -45,11 +46,20 @@
         </tr>
       </tbody>
     </table>
+    <page-navigation
+      v-model="pageNumber"
+      :items-on-page="itemsOnPage"
+      :total-items="totalUsers"
+    />
   </div>
 </template>
 
 <script>
 export default {
+  components: {
+    'count-items-on-page': () => import('@/components/CountItemsOnPage.vue'),
+    'page-navigation': () => import('@/components/PageNavigation.vue')
+  },
   filters: {
     uppercase: function(value) {
       if (!value) return;
@@ -65,12 +75,28 @@ export default {
   data: function() {
     return {
       toggleButtonTooltip: 'Показать/скрыть список',
-      isVisibleUserList: true
+      isVisibleUserList: true,
+      pageNumber: 1,
+      itemsOnPage: 5
     };
   },
   computed: {
     toggleButtonText: function() {
       return this.isVisibleUserList ? 'Скрыть' : 'Показать';
+    },
+    usersVisible: function() {
+      return this.users.slice(
+        (this.pageNumber - 1) * this.itemsOnPage,
+        this.pageNumber * this.itemsOnPage
+      );
+    },
+    totalUsers: function() {
+      return this.users.length;
+    }
+  },
+  watch: {
+    itemsOnPage: function() {
+      this.pageNumber = 1;
     }
   },
   methods: {
